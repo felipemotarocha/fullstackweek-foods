@@ -3,31 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background: 0 0% 96%;
+  --foreground: 0 0% 20%;
+  --card: 356 50% 100%;
+  --card-foreground: 356 5% 15%;
+  --popover: 356 100% 100%;
+  --popover-foreground: 356 100% 10%;
+  --primary: 356 83% 51.6%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 356 30% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 318 30% 95%;
+  --muted-foreground: 225 8% 53%;
+  --accent: 318 30% 90%;
+  --accent-foreground: 356 5% 15%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 356 5% 100%;
+  --border: 356 30% 82%;
+  --input: 356 30% 50%;
+  --ring: 356 83% 51.6%;
+  --radius: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.dark {
+  --background: 356 50% 10%;
+  --foreground: 356 5% 100%;
+  --card: 356 50% 10%;
+  --card-foreground: 356 5% 100%;
+  --popover: 356 50% 5%;
+  --popover-foreground: 356 5% 100%;
+  --primary: 356 83% 51.6%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 356 30% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 318 30% 25%;
+  --muted-foreground: 225 8% 53%;
+  --accent: 318 30% 25%;
+  --accent-foreground: 356 5% 95%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 356 5% 100%;
+  --border: 356 30% 50%;
+  --input: 356 30% 50%;
+  --ring: 356 83% 51.6%;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply box-border;
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  body {
+    @apply text-foreground antialiased;
   }
 }
