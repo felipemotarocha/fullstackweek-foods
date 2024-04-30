@@ -32,7 +32,7 @@ const Home = async () => {
         <Search />
       </div>
 
-      <div className="px-5 pt-6">
+      <div className="pt-6">
         <CategoryList />
       </div>
 
