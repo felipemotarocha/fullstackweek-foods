@@ -13,6 +13,7 @@
     "seed": "ts-node ./prisma/seed.ts"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.0.0",
     "@prisma/client": "^5.12.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -23,6 +24,7 @@
     "git-commit-msg-linter": "^5.0.7",
     "lucide-react": "^0.368.0",
     "next": "14.2.1",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.2.2",
