@@ -42,7 +42,7 @@ const Header = () => {
       </div>
 
       <Sheet>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             size="icon"
             variant="outline"
