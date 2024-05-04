@@ -7,15 +7,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id                  String                   @id @default(cuid())
+  name                String?
+  email               String?                  @unique
+  emailVerified       DateTime?                @map("email_verified")
+  image               String?
+  accounts            Account[]
+  sessions            Session[]
+  orders              Order[]
+  favoriteRestaurants UserFavoriteRestaurant[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
 model Restaurant {
-  id                  String     @id @default(uuid())
+  id                  String                   @id @default(uuid())
   name                String
   imageUrl            String
-  deliveryFee         Decimal    @db.Decimal(10, 2)
+  deliveryFee         Decimal                  @db.Decimal(10, 2)
   deliveryTimeMinutes Int
   categories          Category[]
   products            Product[]
   orders              Order[]
+  usersWhoFavorited   UserFavoriteRestaurant[]
+}
+
+model UserFavoriteRestaurant {
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+
+   @@id([userId, restaurantId])
 }
 
 model Category {
@@ -39,7 +103,7 @@ model Product {
   categoryId         String
   category           Category       @relation(fields: [categoryId], references: [id])
   createdAt          DateTime       @default(now())
-  orderProducts       OrderProduct[]
+  orderProducts      OrderProduct[]
 }
 
 model OrderProduct {
@@ -73,56 +137,4 @@ enum OrderStatus {
   PREPARING
   DELIVERING
   COMPLETED
-}
-
-model Account {
-  id                String  @id @default(cuid())
-  userId            String  @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  orders        Order[]
-
-  @@map("users")
-}
-
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@unique([identifier, token])
-  @@map("verificationtokens")
 }
